@@ -14,7 +14,7 @@ public class User {
 	@GeneratedValue  //자동으로 1씩 증가
 	private Long id;
 	
-	@Column(nullable=false,length=20)
+	@Column(nullable=false,length=20,unique=true)
 	private String userid;
 	
 	private String password;

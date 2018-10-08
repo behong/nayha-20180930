@@ -25,7 +25,7 @@ public class UserController {
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("user");
+		session.removeAttribute("session_user");
 		return "redirect:/";
 	}	
 	
@@ -51,7 +51,7 @@ public class UserController {
 
 		// login 성공
 		System.out.println("LOGIN SUCCESS !!!");
-		session.setAttribute("user", user);
+		session.setAttribute("session_user", user);
 		
 		return "redirect:/";
 
@@ -78,23 +78,57 @@ public class UserController {
 	}
 	
 	@GetMapping("/{updateId}/form")
-	public String updateForm(@PathVariable Long updateId,Model model) {
+	public String updateForm(@PathVariable Long updateId,Model model,HttpSession session) {
 		//findone 애러 JpaRepository findone 미구현..??
 		//User user = userRepository.getOne(updateId);
+		
+		//로그인 세션 가져오기
+		Object temp_user = session.getAttribute("session_user");
+
+		//로그인 정보 체크
+		if(temp_user == null ) {
+			return "redirect:/user/loginForm";
+		}
+		
+		//로그인 정보 캐스팅
+		User session_user_cast = (User) temp_user;
+		
+		//로그인 세션과 수정 ID정보가 다르면 
+		if(!updateId.equals(session_user_cast.getId())) {
+			throw new IllegalStateException("자신의 정보만 수정 가능합니다.");
+		}
+		
 		User user = userRepository.findById(updateId).get();
-		//System.out.println("rtn_user " + user );
+		
 		model.addAttribute("rtn_user", user);
 		return "/user/updateForm";
 	}
 	
 	//@PostMapping("/update")
 	@PutMapping("/update")
-	public String userUpdate(User newUser) {
-		System.out.println("newUser" + newUser );
+	public String userUpdate(User update_User ,HttpSession session) {
+		
+		//로그인 세션 가져오기
+		Object temp_user = session.getAttribute("session_user");
+
+		//로그인 정보 체크
+		if(temp_user == null ) {
+			return "redirect:/user/loginForm";
+		}
+		
+		//로그인 정보 캐스팅
+		User session_user_cast = (User)temp_user;
+		
+		//로그인 세션과 수정 ID정보가 다르면 
+		if(!update_User.getId().equals(session_user_cast.getId())) {
+			throw new IllegalStateException("자신의 정보만 수정 가능합니다.");
+		}
+		
+		System.out.println("newUser" + update_User );
 		//전달된 ID로  현재 db 읽어오기
-		User user = userRepository.findById(newUser.getId()).get();
+		User user = userRepository.findById(update_User.getId()).get();
 		//변경
-		user.update(newUser);
+		user.update(update_User);
 		//변경 DB 반영
 		userRepository.save(user);
 		return "redirect:/user/list";
