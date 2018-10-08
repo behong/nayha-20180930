@@ -1,5 +1,7 @@
 package com.example.web;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,34 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@GetMapping("/loginForm")
+	public String loginForm() {
+		return "user/login";
+	}
+	
+	@PostMapping("/login")
+	public String login(String userid, String password,HttpSession session) {
+
+		User user = userRepository.findByUserid(userid);
+
+		if (user == null) {
+			System.out.println("LOGIN FAIL !!!");
+			return "redirect:/user/loginForm";
+		}
+		
+		if (!password.equals(user.getPassword())) {
+			System.out.println("LOGIN FAIL !!!");
+			return "redirect:/user/loginForm";
+		}
+
+		// login 성공
+		System.out.println("LOGIN SUCCESS !!!");
+		session.setAttribute("user", user);
+		
+		return "redirect:/";
+
+	}
 	
 	@GetMapping("/form")
 	public String form() {

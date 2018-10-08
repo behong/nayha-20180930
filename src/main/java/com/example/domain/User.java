@@ -32,9 +32,7 @@ public class User {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-
-
-
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -57,6 +55,18 @@ public class User {
 	public Long getId() {
 		return id;
 	}
+	
+
+	public String getUserid() {
+		return userid;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
 
 	public void update(User newUser) {
 		this.password = newUser.password;
