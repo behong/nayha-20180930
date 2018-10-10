@@ -12,7 +12,7 @@
       {{#rtn_user}}
           <form name="question" method="post" action="/user/update">
           <input type="hidden" name="id"  value={{id}} />
-          <input type="hidden" name="_method"  value="put" />
+          <input type="hidden" name="_method"  value="put" /><!-- spring put 으로 전달하기 위해 -->
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
                   <input class="form-control" id="userid" name="userid" placeholder="User ID" value="{{userid}}">
