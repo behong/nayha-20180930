@@ -51,6 +51,11 @@ public class Question {
 			this.title = title;
 			this.contents = contents;
 	}
+
+	public boolean isSameWriter(User loginUser) {
+		//인스턴스 는 다르지만 값은 비교 가능
+		return this.writer.equals(loginUser);
+	}
 	
 	
 
