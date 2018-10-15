@@ -23,25 +23,34 @@ public class Question {
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name="fk_question_writer"))
 	private User writer;
-	
 	private String title;
 	private String contents;
-	
 	private LocalDateTime createDate;
 
 	public Question() {}
 	
 	public Question(User writer, String title, String contents) {
-		super();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
-		this.createDate = createDate.now();
+		//this.createDate = createDate.now();
+		this.createDate = LocalDateTime.now();
 	}
 
 
+	public String getFormatCreateDate() {
+		if ( createDate == null) {
+			return "";
+		}
+		return createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	}
+
 	
+	public void update(String title, String contents) {
+			this.title = title;
+			this.contents = contents;
+	}
 	
 	
 
