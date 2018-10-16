@@ -1,6 +1,7 @@
 package com.example.domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -70,7 +71,12 @@ public class Answer {
 				+ "]";
 	}
 	
-	
+	public String getFormatCreateDate() {
+		if ( createDate == null) {
+			return "";
+		}
+		return createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	}
 	
 	
 
